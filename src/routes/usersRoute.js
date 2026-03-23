@@ -1,15 +1,16 @@
 import { Router } from "express";
 import { listUsersController,listSpecificUserController,updateUserController,deleteUserController } from "../controllers/usersController.js";
+import jwtTokenChecker from "../middleware/jwtSessionChecker.js";    
 
 const usersRoute = Router();
 
-usersRoute.get('/', listUsersController);
+usersRoute.get('/', jwtTokenChecker, listUsersController);
 
-usersRoute.get('/:id', listSpecificUserController);
+usersRoute.get('/:id', jwtTokenChecker, listSpecificUserController);
 
-usersRoute.patch('/:id', updateUserController);
+usersRoute.patch('/:id', jwtTokenChecker, updateUserController);
 
-usersRoute.delete('/:id', deleteUserController);
+usersRoute.delete('/:id', jwtTokenChecker, deleteUserController);
 
 export default usersRoute;
 

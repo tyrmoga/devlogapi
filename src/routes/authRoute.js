@@ -5,7 +5,6 @@ import { loginController, registerController } from "../controllers/authControll
 
 const authRoute = Router();
 
-//dummy auth routes for testing
 authRoute.post('/register', validateRegister, registerController);
 
 authRoute.post('/login', validateLogin, loginController);

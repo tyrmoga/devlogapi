@@ -8,7 +8,7 @@ const jwtTokenChecker = (req, res, next) => {
     const token = authHeader && authHeader.split(' ')[1]; // Expecting "Bearer <token>"
 
     if (!token) {
-        return res.status(401).json({ error: 'Access token is missing' });
+        return res.status(401).json({ error: 'Session Expired. Please log in again.' });
     }
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
