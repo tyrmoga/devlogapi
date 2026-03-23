@@ -16,7 +16,7 @@ export const loginController = async (req, res) => {
         }
     } catch (err) {
         console.error('Error in loginController:', err);
-        res.status(500).json({ success: false, message: 'Internal server error' });
+        res.status(500).json({ status: 500, message: 'Internal server error' });
     }
 };
 
@@ -25,12 +25,12 @@ export const registerController = async (req, res) => {
         const { name, email, password } = req.body;
         const result = await registerUserModel(name, email, password);
         if (result.success) {
-            res.status(200).json(result);
+            res.status(201).json(result);
         } else {
             res.status(400).json(result);
         }
     } catch (err) {
         console.error('Error in registerController:', err);
-        res.status(500).json({ success: false, message: 'Internal server error' });
+        res.status(500).json({ status: 500, message: 'Internal server error' });
     }
 }
