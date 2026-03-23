@@ -2,6 +2,7 @@ import { Router } from "express";
 import { validateLogin, validateRegister } from "../middleware/inputValidation.js";
 import { loginController, registerController } from "../controllers/authController.js";
 
+
 const authRoute = Router();
 
 //dummy auth routes for testing

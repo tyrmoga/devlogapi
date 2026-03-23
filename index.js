@@ -3,7 +3,8 @@ import cors from 'cors';
 import compression from 'compression';
 import dotenv from 'dotenv';
 import { checkDbConnection, initSchema } from './src/config/db.js';
-import authRoute from './src/routes/auth.js';
+import authRoute from './src/routes/authRoute.js';
+import usersRoute from './src/routes/usersRoute.js';
 
 //initialize dotenv, app and port
 dotenv.config();
@@ -23,6 +24,9 @@ app.get('/', (req, res) => {
 //2. auth routes
 
 app.use('/api/auth', authRoute);
+
+//3. user routes
+app.use('/api/users', usersRoute);
 
 
 
