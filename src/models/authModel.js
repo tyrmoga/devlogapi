@@ -4,42 +4,29 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-export const registerUserModel = async (name, email, password) => {
-    try {
-        // Check if user already exists
-        const existingUser = await db.query('SELECT * FROM users WHERE email = $1', [email]);
-        if (existingUser.rowCount > 0) {
-            return { status: 400, message: 'Email already registered' };
-        }
-        // Hash the password
-        const hashedPassword = await bcrypt.hash(password, 10);
-        // Insert new user into database
-        const result = await db.query(
-            'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) ON CONFLICT (email) DO NOTHING RETURNING id, name, email',
-            [name, email, hashedPassword]
-        );
-        return { status: 201, message: 'User registered successfully'};
-    } catch (err) {
-        console.error('Error registering user:', err);
-        return { status: 500, message: 'Registration failed' };
-    }
-};
+// authModel.js — throw on failure
 export const loginUserModel = async (email, password) => {
-    try {
-        // Check if user exists
-        const userResult = await db.query('SELECT * FROM users WHERE email = $1', [email]);
-        if (userResult.rowCount === 0) {
-            return { status: 401, message: 'Invalid email or password' };
-        }
-        const user = userResult.rows[0];
-        // Compare password
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return { status: 401, message: 'Invalid email or password' };
-        }
-        return { status: 200, user: { id: user.id, name: user.name, email: user.email } };
-    } catch (err) {
-        console.error('Error logging in user:', err);
-        return { status: 500, message: 'Login failed' };
-    }
+    const userResult = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+    if (userResult.rowCount === 0) throw { status: 401, message: 'Invalid email or password' };
+    
+    const isMatch = await bcrypt.compare(password, userResult.rows[0].password);
+    if (!isMatch) throw { status: 401, message: 'Invalid email or password' };
+    
+    return userResult.rows[0];
 };
+
+//registermodel rewritten  to throw errors
+export const registerUserModel = async (name, email, password) => {
+    const existingUser = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+    if (existingUser.rowCount > 0) throw { status: 400, message: 'Email already exists' };
+    
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const result = await db.query(
+        'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id, name, email',
+        [name, email, hashedPassword]
+    );
+    if (result.rowCount === 0) throw { status: 500, message: 'Failed to register user' };
+
+    return result.rows[0];
+};
+

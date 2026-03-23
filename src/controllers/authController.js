@@ -4,33 +4,25 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+// authController.js — catch and respond
 export const loginController = async (req, res) => {
     try {
         const { email, password } = req.body;
-        const result = await loginUserModel(email, password);
-        if (result.status === 200) {
-            const token = jwt.sign({ id: result.user.id, name: result.user.name, email: result.user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
-            res.status(200).json({ ...result, token });
-        } else {
-            res.status(400).json(result);
-        }
+        const user = await loginUserModel(email, password);
+        const token = jwt.sign({ id: user.id, name: user.name, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        res.status(200).json({ token });
     } catch (err) {
-        console.error('Error in loginController:', err);
-        res.status(500).json({ status: 500, message: 'Internal server error' });
+        res.status(err.status || 500).json({ error: err.message || 'Internal server error' });
     }
 };
 
+//registerController rewritten to catch and respond
 export const registerController = async (req, res) => {
     try {
         const { name, email, password } = req.body;
         const result = await registerUserModel(name, email, password);
-        if (result.status === 201) {
-            res.status(201).json(result);
-        } else {
-            res.status(400).json(result);
-        }
+        res.status(201).json(result);
     } catch (err) {
-        console.error('Error in registerController:', err);
-        res.status(500).json({ status: 500, message: 'Internal server error' });
+        res.status(err.status || 500).json({ error: err.message || 'Internal server error' });
     }
-}
+};
