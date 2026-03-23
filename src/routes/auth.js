@@ -1,14 +1,12 @@
 import { Router } from "express";
+import { validateLogin, validateRegister } from "../middleware/inputValidation.js";
+import { loginController, registerController } from "../controllers/authController.js";
 
 const authRoute = Router();
 
 //dummy auth routes for testing
-authRoute.post('/register', (req, res) => {
-    res.status(200).send(' You have found the Register route');
-});
+authRoute.post('/register', validateRegister, registerController);
 
-authRoute.post('/login', (req, res) => {
-    res.status(200).send(' You have found the Login route');
-});
+authRoute.post('/login', validateLogin, loginController);
 
 export default authRoute;
