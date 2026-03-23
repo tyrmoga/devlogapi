@@ -40,7 +40,7 @@ export const updateUserModel = async (id, name, email) => {
 export const deleteUserModel = async (id) => {
     try {
         await db.query('DELETE FROM users WHERE id = $1', [id]);
-        return { success: true, message: 'User deleted successfully' };
+        return { status: 200, message: 'User deleted successfully' };
     }
     catch (err) {
         console.error('Error in deleteUserModel:', err);
