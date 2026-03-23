@@ -23,7 +23,7 @@ export const listSpecificUserController = async (req, res) => {
                 res.status(200).json({ status: 200, data: user });
             } catch (err) {
                 console.error('Error in listSpecificUserController:', err);
-                res.status(500).json({ status: 500, message: 'Internal server error' });
+                res.status(err.status || 500).json({ error: err.message || 'Internal server error' });
             }     
 };
 
@@ -36,7 +36,7 @@ export const updateUserController = async (req, res) => {
                 res.status(200).json({ status: 200, data: updatedUser });
             } catch (err) {
                 console.error('Error in updateUserController:', err);
-                res.status(500).json({ status: 500, message: 'Internal server error' });
+                res.status(err.status || 500).json({ error: err.message || 'Internal server error' });
             }
         };
    
@@ -47,7 +47,7 @@ export const deleteUserController = async (req, res) => {
                 res.status(200).json(result);
             } catch (err) {
                 console.error('Error in deleteUserController:', err);
-                res.status(500).json({ status: 500, message: 'Internal server error' });
+                res.status(err.status || 500).json({ error: err.message || 'Internal server error' });
             }
     };
  

@@ -26,6 +26,9 @@ export const listSpecificUserModel = async (id) => {
 
 export const updateUserModel = async (id, name, email) => {
     try {
+        const thisUser =await db.query('SELECT * FROM users WHERE id = $1', [id]);
+        if(thisUser.rowCount === 0) throw { status: 404, message: 'User not found' };
+        if (thisUser.rows[0].id !== id) throw { status: 403, message: 'Forbidden: You can only update your own profile' };
         const result = await db.query(
             'UPDATE users SET name = $1, email = $2 WHERE id = $3 RETURNING id, name, email',
             [name, email, id]
@@ -39,6 +42,9 @@ export const updateUserModel = async (id, name, email) => {
 
 export const deleteUserModel = async (id) => {
     try {
+        const thisUser = await db.query('SELECT * FROM users WHERE id = $1', [id]);
+        if (thisUser.rowCount === 0) throw { status: 404, message: 'User not found' };
+        if (thisUser.rows[0].id !== id) throw { status: 403, message: 'Forbidden: You can only delete your own profile' };
         await db.query('DELETE FROM users WHERE id = $1', [id]);
         return { status: 200, message: 'User deleted successfully' };
     }
