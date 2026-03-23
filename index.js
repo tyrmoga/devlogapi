@@ -1,7 +1,8 @@
+
+import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import compression from 'compression';
-import dotenv from 'dotenv';
 import { checkDbConnection, initSchema } from './src/config/db.js';
 import authRoute from './src/routes/authRoute.js';
 import usersRoute from './src/routes/usersRoute.js';

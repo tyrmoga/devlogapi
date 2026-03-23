@@ -1,8 +1,6 @@
 import { registerUserModel, loginUserModel } from "../models/authModel.js";
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
 
-dotenv.config();
 
 // authController.js — catch and respond
 export const loginController = async (req, res) => {

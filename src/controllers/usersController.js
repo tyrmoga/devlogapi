@@ -1,8 +1,5 @@
 import { listUsersModel, listSpecificUserModel, updateUserModel,deleteUserModel } from '../models/usersModel.js';
-import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
 
-dotenv.config();
 
 export const listUsersController = async (req, res) => {
     try {

@@ -1,8 +1,6 @@
 import db from '../config/db.js';
 import bcrypt from 'bcryptjs';
-import dotenv from 'dotenv';
 
-dotenv.config();
 
 // authModel.js — throw on failure
 export const loginUserModel = async (email, password) => {
