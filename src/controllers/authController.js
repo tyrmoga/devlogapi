@@ -1,11 +1,16 @@
 import { registerUserModel, loginUserModel } from "../models/authModel.js";
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export const loginController = async (req, res) => {
     try {
         const { email, password } = req.body;
         const result = await loginUserModel(email, password);
         if (result.success) {
-            res.status(200).json(result);
+            const token = jwt.sign({ id: result.user.id, name: result.user.name, email: result.user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+            res.status(200).json({ ...result, token });
         } else {
             res.status(400).json(result);
         }
