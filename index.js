@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import compression from 'compression';
 import dotenv from 'dotenv';
-import { checkDbConnection } from './src/config/db.js';
+import { checkDbConnection, initSchema } from './src/config/db.js';
 
 //initialize dotenv, app and port
 dotenv.config();
@@ -19,6 +19,7 @@ app.use(compression()); //gzip compression for responses, can be configured late
 
 //check db connection 
 checkDbConnection(); 
+initSchema();
 
 //start the server
 app.listen(port, () => {
