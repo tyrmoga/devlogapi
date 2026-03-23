@@ -71,7 +71,5 @@ const initSchema = async () => {
   }
 };
 
-
-
 export default db;
 export { checkDbConnection, initSchema };
