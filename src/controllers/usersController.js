@@ -1,4 +1,4 @@
-import { listUsersService, listSpecificUserService, updateUserService,deleteUserService } from '../services/usersService.js';
+import { listUsersService, listMeService, updateUserService,deleteUserService } from '../services/usersService.js';
 
 
 
@@ -12,37 +12,37 @@ export const listUsersController = async (req, res) => {
     }
 };
 
-export const listSpecificUserController = async (req, res) => {
+export const listMeController = async (req, res) => {
     try {
-        const user = await listSpecificUserService(req.params.id);
+        const user = await listMeService(req.user.id);
         if (!user) {
             return res.status(404).json({ status: 404, message: 'User not found' });
         }
         res.status(200).json({ status: 200, data: user });
     } catch (err) {
-        console.error('Error in listSpecificUserController:', err);
+        console.error('Error in listMeController:', err);
         res.status(err.status || 500).json({ error: err.message || 'Internal server error' });
     }
 };
 
 
-export const updateUserController = async (req, res) => {
+export const updateMeController = async (req, res) => {
     try {
-        const updatedUser = await updateUserService(req.user.id, req.params.id, req.body.name, req.body.email);
+        const updatedUser = await updateUserService(req.user.id, req.user.id, req.body.name, req.body.email);
         res.status(200).json({ status: 200, data: updatedUser });
     } catch (err) {
-        console.error('An error occurred in updateUserController:', err);
+        console.error('An error occurred in updateMeController:', err);
         res.status(err.status || 500).json({ error: err.message || 'Internal server error' });
     }
 };
 
 
-export const deleteUserController = async (req, res) => {
+export const deleteMeController = async (req, res) => {
     try {
-        const result = await deleteUserService(req.user.id, req.params.id);
+        const result = await deleteUserService(req.user.id, req.user.id);
         res.status(200).json(result);
     }catch (err) {
-        console.error('Error in deleteUserController:', err);
+        console.error('Error in deleteMeController:', err);
         res.status(err.status || 500).json({ error: err.message || 'Internal server error' });
     }
 };

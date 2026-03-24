@@ -5,7 +5,7 @@ export const listUsersService = async () => {
     return users;
 };
 
-export const listSpecificUserService = async (id) => {
+export const listMeService = async (id) => {
     const user = await listSpecificUserModel(id);
     return user;
 };
