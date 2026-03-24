@@ -1,6 +1,6 @@
 import pool from 'pg';
 import dotenv from 'dotenv';
-import { createUsersTable, createProjectsTable, createLogsTable, createProjectMembersTable,createIndexes } from '../data/dbSchema.js';
+import { createUsersTable, createProjectsTable, createLogsTable, createProjectMembersTable, createBlacklistedTokensTable, createIndexes } from '../data/dbSchema.js';
 
 dotenv.config();
 
@@ -57,6 +57,9 @@ const initSchema = async () => {
 
     await client.query(createLogsTable);
     console.log('Logs table created successfully');
+
+    await client.query(createBlacklistedTokensTable);
+    console.log('Token_blacklist table created successfully');
 
     await client.query(createIndexes);
     console.log('Indexes created successfully');

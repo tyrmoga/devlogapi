@@ -42,6 +42,13 @@ CREATE TABLE IF NOT EXISTS logs (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 `;
+export const createBlacklistedTokensTable = `
+CREATE TABLE IF NOT EXISTS token_blacklist (
+    token TEXT NOT NULL,
+    expires_at TIMESTAMP NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_blacklist_token ON token_blacklist(token);
+`;
 
 export const createIndexes = `
 CREATE INDEX IF NOT EXISTS idx_logs_project ON logs(project_id);

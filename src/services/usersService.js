@@ -1,4 +1,5 @@
 import { listUsersModel, listSpecificUserModel, updateUserModel, deleteUserModel } from '../models/usersModel.js';
+import { blacklistToken } from '../models/tokenBlacklistModel.js';
 
 export const listUsersService = async () => {
     const users = await listUsersModel();
@@ -30,10 +31,15 @@ export const updateUserService = async (requestingUserId, id, fields) => {
     return await updateUserModel(id, sanitizedFields);
 };
 
-export const deleteUserService = async (requestingUserId, id) => {
+export const deleteUserService = async (id, token) => {
     const thisUser = await listSpecificUserModel(id);
     if (!thisUser) throw { status: 404, message: 'User not found' };
-    if (thisUser.id !== requestingUserId) throw { status: 403, message: 'Forbidden: You can only delete your own profile' };
-    const deletedUser = await deleteUserModel(id);
-    return deletedUser;
+
+    await deleteUserModel(id);
+
+    // Invalidate the token immediately
+    const decoded = jwt.decode(token);
+    await blacklistToken(token, new Date(decoded.exp * 1000));
+
+    return { message: 'User deleted successfully' };
 };

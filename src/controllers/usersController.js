@@ -39,10 +39,10 @@ export const updateMeController = async (req, res) => {
 
 export const deleteMeController = async (req, res) => {
     try {
-        const result = await deleteUserService(req.user.id, req.user.id);
-        res.status(200).json({ status: 200, data: result });
-    }catch (err) {
-        console.error('Error in deleteMeController:', err);
+        const token = req.headers['authorization'].split(' ')[1];
+        const result = await deleteUserService(req.user.id, token);
+        res.status(200).json(result);
+    } catch (err) {
         res.status(err.status || 500).json({ error: err.message || 'Internal server error' });
     }
 };
