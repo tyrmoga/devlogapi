@@ -28,3 +28,17 @@ export const validateRegister = (req, res, next) => {
   }
   next();
 };
+
+//middleware to ensure patch does not pass empty body or fields that are not allowed to be updated
+export const updateSchema = Joi.object({
+  name: Joi.string().min(3).max(100),
+  email: Joi.string().email().max(150),
+}).min(1);
+
+export const validateUpdate = (req, res, next) => {
+  const { error } = updateSchema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ error: error.details[0].message });
+  }
+  next();
+};
