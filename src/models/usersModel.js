@@ -12,31 +12,14 @@ export const listSpecificUserModel = async (id) => {
 };
 
 export const updateUserModel = async (id, name, email) => {
-    try {
-        const thisUser =await db.query('SELECT * FROM users WHERE id = $1', [id]);
-        if(thisUser.rowCount === 0) throw { status: 404, message: 'User not found' };
-        if (thisUser.rows[0].id !== id) throw { status: 403, message: 'Forbidden: You can only update your own profile' };
-        const result = await db.query(
-            'UPDATE users SET name = $1, email = $2 WHERE id = $3 RETURNING id, name, email',
-            [name, email, id]
-        );
-        return result.rows[0];
-    } catch (err) {
-        console.error('Error in updateUserModel:', err);
-        throw err;
-    }
+    const result = await db.query(
+        'UPDATE users SET name = $1, email = $2 WHERE id = $3 RETURNING id, name, email',
+        [name, email, id]
+    );
+    return result.rows[0];
 };
 
 export const deleteUserModel = async (id) => {
-    try {
-        const thisUser = await db.query('SELECT * FROM users WHERE id = $1', [id]);
-        if (thisUser.rowCount === 0) throw { status: 404, message: 'User not found' };
-        if (thisUser.rows[0].id !== id) throw { status: 403, message: 'Forbidden: You can only delete your own profile' };
-        await db.query('DELETE FROM users WHERE id = $1', [id]);
-        return { status: 200, message: 'User deleted successfully' };
-    }
-    catch (err) {
-        console.error('Error in deleteUserModel:', err);
-        throw err;
-    }
+    await db.query('DELETE FROM users WHERE id = $1', [id]);
+    return { message: 'User deleted successfully' };
 };
