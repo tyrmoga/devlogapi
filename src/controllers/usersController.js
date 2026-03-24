@@ -1,4 +1,4 @@
-import { listUsersService, listSpecificService, updateUserService,deleteUserService } from '../services/usersService.js';
+import { listUsersService, listSpecificUserService, updateUserService,deleteUserService } from '../services/usersService.js';
 
 
 
@@ -12,23 +12,9 @@ export const listUsersController = async (req, res) => {
     }
 };
 
-
-// export const listSpecificUserController = async (req, res) => {
-//     try {
-//          const user = await listSpecificUserModel(req.params.id);
-//                 if (!user) {
-//                     return res.status(404).json({ status: 404, message: 'User not found' });
-//                 }
-//                 res.status(200).json({ status: 200, data: user });
-//             } catch (err) {
-//                 console.error('Error in listSpecificUserController:', err);
-//                 res.status(err.status || 500).json({ error: err.message || 'Internal server error' });
-//             }     
-// };
-
 export const listSpecificUserController = async (req, res) => {
     try {
-        const user = await listSpecificService(req.params.id);
+        const user = await listSpecificUserService(req.params.id);
         if (!user) {
             return res.status(404).json({ status: 404, message: 'User not found' });
         }
