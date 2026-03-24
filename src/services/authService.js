@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import { loginUserModel, registerUserModel } from '../models/authModel.js';
 
 export const loginUserService = async (email, password) => {    
-        const user = await loginUserModel(email, password);    
+        const user = await loginUserModel(email);    
         if (!user) throw { status: 401, message: 'Invalid email or password' };         
         const isMatch = await bcrypt.compare(password, user.password);
 

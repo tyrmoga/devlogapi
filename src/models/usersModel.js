@@ -2,23 +2,13 @@ import db from '../config/db.js';
 
 
 export const listUsersModel = async () => {
-    try {
         const result = await db.query('SELECT id, name, email FROM users');
         return result.rows;
-    } catch (err) {
-        console.error('Error in listUsersModel:', err);
-        throw err;
-    }
 };
 
 export const listSpecificUserModel = async (id) => {
-    try {
         const result = await db.query('SELECT id, name, email FROM users WHERE id = $1', [id]);
         return result.rows[0];
-    } catch (err) {
-        console.error('Error in listSpecificUserModel:', err);
-        throw err;
-    }
 };
 
 export const updateUserModel = async (id, name, email) => {

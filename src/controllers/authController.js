@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { loginUserService } from "../services/authService.js";
+import { loginUserService, registerUserService } from "../services/authService.js";
 
 
 // authController.js — catch and respond
