@@ -1,5 +1,6 @@
 import { listUsersModel, listSpecificUserModel, updateUserModel, deleteUserModel } from '../models/usersModel.js';
 import { blacklistToken } from '../models/tokenBlacklistModel.js';
+import jwt from 'jsonwebtoken';
 
 export const listUsersService = async () => {
     const users = await listUsersModel();

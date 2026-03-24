@@ -1,3 +1,4 @@
+import db from '../config/db.js';
 export const blacklistToken = async (token, expiresAt) => {
     await db.query(
         'INSERT INTO token_blacklist (token, expires_at) VALUES ($1, $2)',
