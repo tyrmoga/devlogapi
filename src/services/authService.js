@@ -10,10 +10,13 @@ export const loginUserService = async (email, password) => {
         return { id: user.id, name: user.name, email: user.email };
 };
 
-export const registerUserService = async (name, email, password) => {    
+export const registerUserService = async (name, email, password) => {
+    const existing = await loginUserModel(email);
+    if (existing) throw { status: 409, message: 'Email already in use' };
+    
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await registerUserModel(name, email, hashedPassword);
-    if (!newUser) throw { status: 500, message: 'Failed to register user' };
+    if (!newUser) throw { status: 500, message: 'Failed to create user' };
     return newUser;
 };
     

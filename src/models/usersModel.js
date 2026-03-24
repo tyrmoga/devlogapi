@@ -11,10 +11,16 @@ export const listSpecificUserModel = async (id) => {
         return result.rows[0];
 };
 
-export const updateUserModel = async (id, name, email) => {
+export const updateUserModel = async (id, fields) => {
+    const keys = Object.keys(fields); // ['name'] or ['email'] or ['name', 'email']
+    const values = Object.values(fields);
+    
+    const setClause = keys.map((key, i) => `${key} = $${i + 1}`).join(', ');
+    values.push(id);
+    
     const result = await db.query(
-        'UPDATE users SET name = $1, email = $2 WHERE id = $3 RETURNING id, name, email',
-        [name, email, id]
+        `UPDATE users SET ${setClause}, updated_at = NOW() WHERE id = $${values.length} RETURNING id, name, email`,
+        values
     );
     return result.rows[0];
 };

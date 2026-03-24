@@ -28,7 +28,7 @@ export const listMeController = async (req, res) => {
 
 export const updateMeController = async (req, res) => {
     try {
-        const updatedUser = await updateUserService(req.user.id, req.user.id, req.body.name, req.body.email);
+        const updatedUser = await updateUserService(req.user.id, req.user.id, req.body);
         res.status(200).json({ status: 200, data: updatedUser });
     } catch (err) {
         console.error('An error occurred in updateMeController:', err);
@@ -40,7 +40,7 @@ export const updateMeController = async (req, res) => {
 export const deleteMeController = async (req, res) => {
     try {
         const result = await deleteUserService(req.user.id, req.user.id);
-        res.status(200).json(result);
+        res.status(200).json({ status: 200, data: result });
     }catch (err) {
         console.error('Error in deleteMeController:', err);
         res.status(err.status || 500).json({ error: err.message || 'Internal server error' });
